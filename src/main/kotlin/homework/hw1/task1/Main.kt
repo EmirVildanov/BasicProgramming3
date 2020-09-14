@@ -1,0 +1,37 @@
+package homework.hw1.task1
+
+import homework.hw1.task1.exceptions.FileReadException
+import homework.hw1.task1.exceptions.NetworkMatrixException
+import java.io.File
+
+fun main() {
+    lateinit var computersNetworkMatrix: List<List<Int>>
+    lateinit var computersArray: List<Computer>
+    var importCheck = true
+    try {
+        val dataFile = File("./src/main/resources/kotlin/homework/hw1/task1/" + "testFileForMain.txt")
+        val computersDataParser = NetworkFileParser(dataFile)
+        computersNetworkMatrix = computersDataParser.computersNetworkMatrix
+        computersArray = computersDataParser.computersArray
+    } catch (exception: FileReadException) {
+        println(exception.message)
+        println(exception.innerException.message)
+        importCheck = false
+    } catch (exception: NetworkMatrixException) {
+        println(exception.message)
+        importCheck = false
+    }
+    if (!importCheck) {
+        return
+    }
+    val computersNetwork = ComputersNetwork(computersNetworkMatrix, computersArray)
+    print("Enter the infection turn frequency in milliseconds(for example, 1000): ")
+    val frequency: Long
+    try {
+        frequency = readLine()?.toLong() ?: 0
+    } catch (exception: NumberFormatException) {
+        println("Int number expected")
+        return
+    }
+    computersNetwork.startInfectingProcess(frequency)
+}

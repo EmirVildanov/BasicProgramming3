@@ -1,0 +1,11 @@
+5
+0 1 1 0 0
+0 0 0 1 0
+0 0 0 0 1
+0 0 0 0 1
+0 1 0 0 0
+Android, 0.1, true
+IOS, 0.8, false
+MacOs, 0.2, false
+Android, 0.2, false
+MacOs, 0.1, true

@@ -27,9 +27,7 @@ class ComputersNetwork(
         println("")
     }
 
-    private fun infectNeighbors(
-        currentComputerIndex: Int
-    ) {
+    private fun infectNeighbors(currentComputerIndex: Int) {
         val neighbors = computersNetworkMatrix[currentComputerIndex]
         for (j in neighbors.indices) {
             if (j != currentComputerIndex && neighbors[j] == 1 && !computersArray[j].isInfected) {

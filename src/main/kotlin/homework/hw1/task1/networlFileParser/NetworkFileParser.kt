@@ -23,7 +23,7 @@ class NetworkFileParser(file: File) {
             val computersNumber = getComputersNumber()
             computersNetworkMatrix = getComputersNetworkMatrix(computersNumber)
             computersArray = getComputersArray(computersNumber)
-            if (!checkNetworkForCovering(computersNetworkMatrix)) {
+            if (!checkNetworkForCovering(computersNetworkMatrix, computersArray)) {
                 throw NetworkMatrixException("Virus can't get to one of computer. Wrong matrix")
             }
         } catch (exception: NumberFormatException) {
@@ -95,7 +95,10 @@ class NetworkFileParser(file: File) {
         return computersArray
     }
 
-    private fun checkNetworkForCovering(computersNetworkMatrix: List<List<Int>>): Boolean {
+    private fun checkNetworkForCovering(
+        computersNetworkMatrix: List<List<Int>>,
+        fileComputersArray: List<Computer>
+    ): Boolean {
         // first - neighborsList; second - isChecked
         val computersArray = Array(computersNetworkMatrix.size) {
             mutableListOf<Int>() to false }
@@ -108,7 +111,7 @@ class NetworkFileParser(file: File) {
             }
         }
         var previousCheckedState: List<Boolean>
-        var currentCheckedState: List<Boolean>
+        var currentCheckedState = computersArray.map { it.second }
         var currentImmutabilityState = false
         while (!currentImmutabilityState && !checkForTotalNetworkCover(computersArray)) {
             previousCheckedState = computersArray.map { it.second }
@@ -120,13 +123,16 @@ class NetworkFileParser(file: File) {
             currentCheckedState = computersArray.map { it.second }
             currentImmutabilityState = checkForImmutability(previousCheckedState, currentCheckedState)
         }
-        if (currentImmutabilityState) {
+        if (currentImmutabilityState && !uncoveredComputersAreInfected(currentCheckedState, fileComputersArray)) {
             return false
         }
         return true
     }
 
-    private fun checkForImmutability(previousState: List<Boolean>, currentState: List<Boolean>): Boolean {
+    private fun checkForImmutability(
+        previousState: List<Boolean>,
+        currentState: List<Boolean>
+    ): Boolean {
         var checkResult = true
         if (previousState.size != currentState.size) {
             checkResult = false
@@ -137,6 +143,18 @@ class NetworkFileParser(file: File) {
             }
         }
         return checkResult
+    }
+
+    private fun uncoveredComputersAreInfected(
+        currentState: List<Boolean>,
+        fileComputersArray: List<Computer>
+    ): Boolean {
+        for (i in currentState.indices) {
+            if (!currentState[i] && !fileComputersArray[i].isInfected) {
+                return false
+            }
+        }
+        return true
     }
 
     private fun checkForTotalNetworkCover(computersArray: Array<Pair<MutableList<Int>, Boolean>>): Boolean {

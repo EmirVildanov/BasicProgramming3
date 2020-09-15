@@ -1,7 +1,9 @@
-package homework.hw1.task1
+package homework.hw1.task1.networlFileParser
 
-import homework.hw1.task1.exceptions.FileReadException
-import homework.hw1.task1.exceptions.NetworkMatrixException
+import homework.hw1.task1.Computer
+import homework.hw1.task1.OperatingSystem
+import homework.hw1.task1.networlFileParser.exceptions.FileReadException
+import homework.hw1.task1.networlFileParser.exceptions.NetworkMatrixException
 import java.io.File
 import java.lang.Exception
 import java.lang.IllegalArgumentException
@@ -27,6 +29,8 @@ class NetworkFileParser(file: File) {
         } catch (exception: NumberFormatException) {
             handleException(exception)
         } catch (exception: IllegalArgumentException) {
+            handleException(exception)
+        } catch (exception: NoSuchElementException) {
             handleException(exception)
         }
     }
@@ -79,8 +83,14 @@ class NetworkFileParser(file: File) {
                 "Wrong infection state argument: $computerIsInfected"
             }
             computersArray.add(
-                Computer(OperatingSystem(operatingSystemName, operatingSystemInfectingChance),
-                    computerIsInfected.toBoolean()))
+                Computer(
+                    OperatingSystem(
+                        operatingSystemName,
+                        operatingSystemInfectingChance
+                    ),
+                    computerIsInfected.toBoolean()
+                )
+            )
         }
         return computersArray
     }

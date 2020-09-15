@@ -1,7 +1,9 @@
 package homework.hw1.task1
 
-import homework.hw1.task1.exceptions.FileReadException
-import homework.hw1.task1.exceptions.NetworkMatrixException
+import homework.hw1.task1.networlFileParser.exceptions.FileReadException
+import homework.hw1.task1.networlFileParser.exceptions.NetworkMatrixException
+import homework.hw1.task1.networlFileParser.NetworkFileParser
+import homework.hw1.task1.probabilityGenerator.RandomProbabilityGenerator
 import java.io.File
 
 fun main() {
@@ -24,7 +26,7 @@ fun main() {
     if (!importCheck) {
         return
     }
-    val computersNetwork = ComputersNetwork(computersNetworkMatrix, computersArray)
+    val computersNetwork = ComputersNetwork(computersNetworkMatrix, computersArray, RandomProbabilityGenerator())
     print("Enter the infection turn frequency in milliseconds(for example, 1000): ")
     val frequency: Long
     try {

@@ -1,10 +1,11 @@
 package homework.hw1.task1
 
-import kotlin.random.Random
+import homework.hw1.task1.probabilityGenerator.ProbabilityGenerator
 
 class ComputersNetwork(
     private val computersNetworkMatrix: List<List<Int>>,
-    private val computersArray: List<Computer>
+    private val computersArray: List<Computer>,
+    private val probabilityGenerator: ProbabilityGenerator
 ) {
 
     private var infectionTurn = 0
@@ -27,21 +28,12 @@ class ComputersNetwork(
     }
 
     private fun infectNeighbors(
-        currentComputerIndex: Int,
-        neighbors: List<Int>,
-        infectingProbability: Double?
+        currentComputerIndex: Int
     ) {
+        val neighbors = computersNetworkMatrix[currentComputerIndex]
         for (j in neighbors.indices) {
             if (j != currentComputerIndex && neighbors[j] == 1 && !computersArray[j].isInfected) {
-                val generatedInfectingProbability: Double
-                if (infectingProbability != null) {
-                    generatedInfectingProbability = infectingProbability
-                } else {
-                    generatedInfectingProbability = Random.nextDouble()
-                }
-                if (computersArray[j].operationSystem.infectingEdge < generatedInfectingProbability) {
-                    computersArray[j].isInfected = true
-                }
+                computersArray[j].infect(probabilityGenerator)
             }
         }
     }
@@ -49,21 +41,10 @@ class ComputersNetwork(
     fun attackComputers() {
         for (i in computersArray.indices) {
             if (computersArray[i].isInfected) {
-                val neighbors = computersNetworkMatrix[i]
-                infectNeighbors(i, neighbors, null)
+                infectNeighbors(i)
             }
         }
     }
-
-    fun attackComputers(infectingProbability: Double) {
-        for (i in computersArray.indices) {
-            if (computersArray[i].isInfected) {
-                val neighbors = computersNetworkMatrix[i]
-                infectNeighbors(i, neighbors, infectingProbability)
-            }
-        }
-    }
-
     fun startInfectingProcess(frequency: Long) {
         printStatistics(computersArray)
         while (!checkForTotalInfection(computersArray)) {

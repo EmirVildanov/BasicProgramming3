@@ -1,8 +1,8 @@
 package homework.hw1.task1
 
-import homework.hw1.task1.networlFileParser.exceptions.FileReadException
-import homework.hw1.task1.networlFileParser.exceptions.NetworkMatrixException
-import homework.hw1.task1.networlFileParser.NetworkFileParser
+import homework.hw1.task1.networkFileParser.exceptions.FileReadException
+import homework.hw1.task1.networkFileParser.exceptions.NetworkMatrixException
+import homework.hw1.task1.networkFileParser.NetworkFileParser
 import homework.hw1.task1.probabilityGenerator.RandomProbabilityGenerator
 import java.io.File
 

@@ -1,6 +1,6 @@
 package homework.hw1.task1
 
-import homework.hw1.task1.networlFileParser.NetworkFileParser
+import homework.hw1.task1.networkFileParser.NetworkFileParser
 import homework.hw1.task1.probabilityGenerator.CustomProbabilityGenerator
 import org.junit.jupiter.api.Test
 

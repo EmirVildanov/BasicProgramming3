@@ -17,8 +17,6 @@ class Parking(
 
     var leavedCarNumber = 0
         private set
-    fun isEmpty() = carsOnParking.isEmpty()
-    fun isAvailable() = carsOnParking.size < maxParkingPlacesNumber
 
     fun enterNewCar(car: Car): Boolean {
         if (carsOnParking.contains(car)) {

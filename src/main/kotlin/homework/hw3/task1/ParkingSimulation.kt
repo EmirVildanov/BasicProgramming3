@@ -1,63 +1,58 @@
 package homework.hw3.task1
 
 import homework.hw3.task1.carsStream.CarsStream
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 import kotlin.random.Random
+import kotlin.system.exitProcess
 
 class ParkingSimulation(
     maxParkingPlacesNumber: Int,
-    private val parkingEntrancesNumber: Int,
-    private val carStream: CarsStream
+    parkingEntrancesNumber: Int,
+    private val carStream: CarsStream,
+    private val carsWaitingDelayTime: Long = 500,
+    private val simulationDelayTime: Long = 100
 ) {
-    private val parking = Parking(maxParkingPlacesNumber)
-    private var entranceMachines = List(parkingEntrancesNumber) {
-        CarEntranceMachine(it, parking)
-    }
+    private val parking = Parking(maxParkingPlacesNumber, parkingEntrancesNumber)
 
     fun start() {
-        println("At start: carStream isEmpty ${carStream.isEmpty}, parking isEmpty ${parking.isEmpty}")
-//        runBlocking {
-//            while () {
-//                if () {
+        val parkingEntrances = parking.entranceMachines
+        var currentCarPair: Pair<Car, Int>?
+        var counter = 0
+        for (i in 0 until carStream.registeredCarsNumber) {
+            val newCarPair = carStream.getNextCar()
+            GlobalScope.launch {
+                newCarPair?.first?.enterTheParking(parkingEntrances[newCarPair.second], carsWaitingDelayTime)
+            }
+        }
+        while (carStream.registeredCarsNumber != parking.leavedCarNumber) {
+//            println("Waiting")
+//            println(parking.leavedCarNumber)
+            continue
+        }
+        println("The end")
+        return
+//            while (!carStream.isEmpty || !parking.isEmpty()) {
+//        while (counter < 10 && carStream.registeredCarsNumber != parking.leavedCarNumber) {
+//            if (Random.nextBoolean()) {
+//                currentCarPair = carStream.getNextCar()
+//            } else {
+//                continue
+//            }
+//            ++counter
+////            currentCarPair = carStream.getNextCar()
+//            println("Pair get in the main : $currentCarPair")
+//            GlobalScope.launch {
+//                val pairCopy = currentCarPair?.copy()
+//                println("Copy is: $pairCopy")
+//                if (pairCopy != null) {
+//                    println("HERE AM I FUCK YOU")
 //                    launch {
-//
-//                    }
-//                } else {
-//                    launch {
-//
+//                        enterCar(pairCopy, parkingEntrances)
 //                    }
 //                }
 //            }
+////                Thread.sleep(simulationDelayTime)
 //        }
-        while (!carStream.isEmpty || !parking.isEmpty) {
-            GlobalScope.launch {
-                println("Iteration")
-                val entranceTurn = Random.nextBoolean() // true - enter new car, false - pop
-                if (!carStream.isEmpty && entranceTurn) {
-                    enterCar()
-                } else {
-                    popCar()
-                }
-            }
-        }
-        println("Simulation ended")
-    }
-
-    private suspend fun enterCar() {
-        val currentCarPair = carStream.getNextCar()
-        if (currentCarPair != null) {
-            entranceMachines[currentCarPair.second].registerEnteringCar(currentCarPair.first)
-        }
-    }
-
-    private suspend fun popCar() {
-        val cars = parking.getCars()
-        val poppingCarIndex = Random.nextInt(0, cars.size)
-        val poppingCar = cars[poppingCarIndex]
-        val leavingCarEntranceIndex = Random.nextInt(0, parkingEntrancesNumber)
-        val currentCarPair = poppingCar to leavingCarEntranceIndex
-        entranceMachines[currentCarPair.second].registerLeavingCar(currentCarPair.first)
+//        println("End of simulation")
     }
 }

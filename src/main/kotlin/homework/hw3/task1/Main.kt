@@ -6,17 +6,17 @@ import homework.hw3.task1.carsStream.CustomCarsStream
 import java.io.File
 
 fun main() {
-    val maxParkingPlacesNumber: Int
-    val parkingEntrancesNumber: Int
-    try {
-        print("Enter the max number of cars that can stay at parking at one time: ")
-        maxParkingPlacesNumber = readLine()?.toInt() ?: 0
-        print("Enter the parking entrance number: ")
-        parkingEntrancesNumber = readLine()?.toInt() ?: 0
-    } catch (exception: NumberFormatException) {
-        println("Int number expected")
-        return
-    }
+    val maxParkingPlacesNumber: Int = 1
+    val parkingEntrancesNumber: Int = 1
+//    try {
+//        print("Enter the max number of cars that can stay at parking at one time: ")
+//        maxParkingPlacesNumber = readLine()?.toInt() ?: 0
+//        print("Enter the parking entrance number(test value is 3): ")
+//        parkingEntrancesNumber = readLine()?.toInt() ?: 0
+//    } catch (exception: NumberFormatException) {
+//        println("Int number expected")
+//        return
+//    }
     val entranceCarsArray = mutableListOf<List<Car>>()
     for (i in 0 until parkingEntrancesNumber) {
         try {

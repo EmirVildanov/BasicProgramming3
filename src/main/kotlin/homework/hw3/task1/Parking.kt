@@ -14,11 +14,7 @@ class Parking(
     val entranceMachines = List(entrancesNumber) {
         CarEntranceMachine(it, this)
     }
-
-    var leavedCarNumber = 0
-        private set
-
-    fun enterNewCar(car: Car): Boolean {
+    suspend fun enterNewCar(car: Car): Boolean {
         if (carsOnParking.contains(car)) {
             throw AlreadyRegisteredCarException("Two cars with the same registration signs appeared" +
             "\n $car")
@@ -26,17 +22,13 @@ class Parking(
         if (carsOnParking.size < maxParkingPlacesNumber) {
             carsOnParking.add(car)
             val leavingEntranceIndex = Random.nextInt(0, entrancesNumber)
-            GlobalScope.launch {
-                car.leaveParkingOnDelay(entranceMachines[leavingEntranceIndex], carLeavingDelayTime)
-            }
+//            car.leaveParkingOnDelay(entranceMachines[leavingEntranceIndex], carLeavingDelayTime)
             return true
         }
         return false
     }
 
     fun popCar(car: Car) {
-        leavedCarNumber++
         carsOnParking.remove(car)
-        println("The number of leaved cars is : $leavedCarNumber")
     }
 }

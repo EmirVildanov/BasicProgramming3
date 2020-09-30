@@ -1,7 +1,7 @@
 package homework.hw3.task1
 
 class CarEntranceMachine(private val id: Int, private val parking: Parking) {
-    fun registerEnteringCar(car: Car): Boolean {
+    suspend fun registerEnteringCar(car: Car): Boolean {
         if (!parking.enterNewCar(car)) {
             println("The parking is full. You will have to wait a bit")
             return false

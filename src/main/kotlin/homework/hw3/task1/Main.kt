@@ -6,7 +6,7 @@ import homework.hw3.task1.carsStream.CustomCarsStream
 import java.io.File
 
 fun main() {
-    val maxParkingPlacesNumber: Int = 1
+    val maxParkingPlacesNumber: Int = 10
     val parkingEntrancesNumber: Int = 1
 //    try {
 //        print("Enter the max number of cars that can stay at parking at one time: ")

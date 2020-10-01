@@ -1,28 +1,34 @@
 package homework.hw3.task1
 
 import homework.hw3.task1.exceptions.AlreadyRegisteredCarException
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import homework.hw3.task1.exceptions.ParkingIsOverflowed
 import kotlin.random.Random
 
 class Parking(
     private val maxParkingPlacesNumber: Int,
-    private val entrancesNumber: Int,
-    private val carLeavingDelayTime: Long = 500
+    private val entrancesNumber: Int
 ) {
+    var enteredCars = mutableListOf<Car>()
+        private set
+    var leavedCars = mutableListOf<Car>()
+        private set
+//    var carsCurrentlyOnParkingNumber = 0
     private val carsOnParking = mutableListOf<Car>()
     val entranceMachines = List(entrancesNumber) {
         CarEntranceMachine(it, this)
     }
-    suspend fun enterNewCar(car: Car): Boolean {
+    fun enterNewCar(car: Car): Boolean {
         if (carsOnParking.contains(car)) {
             throw AlreadyRegisteredCarException("Two cars with the same registration signs appeared" +
             "\n $car")
         }
         if (carsOnParking.size < maxParkingPlacesNumber) {
             carsOnParking.add(car)
-            val leavingEntranceIndex = Random.nextInt(0, entrancesNumber)
-//            car.leaveParkingOnDelay(entranceMachines[leavingEntranceIndex], carLeavingDelayTime)
+            if (carsOnParking.size > maxParkingPlacesNumber) {
+                carsOnParking.remove(car)
+                throw ParkingIsOverflowed("Not enough space for entering a car")
+            }
+            enteredCars.add(car)
             return true
         }
         return false
@@ -30,5 +36,11 @@ class Parking(
 
     fun popCar(car: Car) {
         carsOnParking.remove(car)
+        leavedCars.add(car)
+    }
+
+    fun giveEntranceToLeave(): CarEntranceMachine {
+        val leavingEntranceIndex = Random.nextInt(0, entrancesNumber)
+        return entranceMachines[leavingEntranceIndex]
     }
 }

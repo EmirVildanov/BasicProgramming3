@@ -1,11 +1,11 @@
 package homework.hw3.task1
 
-import homework.hw1.task1.networkFileParser.NetworkFileParser
-import homework.hw1.task1.networkFileParser.exceptions.NetworkMatrixException
 import homework.hw3.task1.carsFileParser.CarsFileParser
 import homework.hw3.task1.carsStream.CustomCarsStream
 import homework.hw3.task1.exceptions.AlreadyRegisteredCarException
 import org.junit.jupiter.api.Assertions
+// import org.junit.jupiter.api.Assertions.assertEquals
+// import org.junit.jupiter.api.RepeatedTest
 import org.junit.jupiter.api.Test
 import java.io.File
 
@@ -15,11 +15,17 @@ internal class SimulationTest {
 
     @Test
     fun shouldThrowExceptionBecauseOfWrongCarsDataThatConsistsTwoSameCars() {
-        val testFile = File(resourcesPath + "testFileWithUncoveredNetwork.txt")
-        val carsDataParser = CarsFileParser(testFile)
-        val carsArray = carsDataParser.getCarsArray()
+        val parkingEntrancesNumber = 2
         val entranceCarsArray = mutableListOf<List<Car>>()
-        entranceCarsArray.add(carsArray)
+        for (i in 0 until parkingEntrancesNumber) {
+            val carsArrayFile = File(
+                resourcesPath + "exception/carsArrayOn${ i + 1 }Entrance.txt"
+            )
+            val carsFileParser = CarsFileParser(carsArrayFile)
+            val carsArray = carsFileParser.getCarsArray()
+            entranceCarsArray.add(carsArray)
+        }
+
         val parkingSimulation = ParkingSimulation(
             2,
             2,
@@ -30,13 +36,25 @@ internal class SimulationTest {
         }
     }
 
-    @Test
-    fun shouldNotAllowCarToEnterBecauseOfFullParking() {
-
-    }
-
-    @Test
-    fun shouldEnterCar() {
-
-    }
+//    @RepeatedTest(5)
+//    fun shouldCheckThatAllCarsEnteredAndLeavedParking() {
+//        val parkingEntrancesNumber = 2
+//        val entranceCarsArray = mutableListOf<List<Car>>()
+//        for (i in 0 until parkingEntrancesNumber) {
+//            val carsArrayFile = File(
+//                resourcesPath + "test1/carsArrayOn${ i + 1 }Entrance.txt"
+//            )
+//            val carsFileParser = CarsFileParser(carsArrayFile)
+//            val carsArray = carsFileParser.getCarsArray()
+//            entranceCarsArray.add(carsArray)
+//        }
+//
+//        val parkingSimulation = ParkingSimulation(
+//            2,
+//            2,
+//            CustomCarsStream(entranceCarsArray.toList())
+//        )
+//        parkingSimulation.start()
+//        assertEquals(parkingSimulation.getParkingEnteredCarsNumber(), parkingSimulation.getParkingLeavedCarsNumber())
+//    }
 }

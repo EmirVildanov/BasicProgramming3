@@ -3,7 +3,7 @@ package homework.hw3.task1
 import homework.hw3.task1.carsFileParser.CarsFileParser
 import homework.hw3.task1.carsFileParser.FileReadException
 import homework.hw3.task1.carsStream.CustomCarsStream
-import homework.hw3.task1.exceptions.AlreadyRegisteredCarException
+import homework.hw3.task1.carsStream.EmptyCarStreamException
 import java.io.File
 
 fun main() {
@@ -33,14 +33,14 @@ fun main() {
             return
         }
     }
-    val parkingSimulation = ParkingSimulation(
+    val parkingSimulation = Simulation(
         maxParkingPlacesNumber,
         parkingEntrancesNumber,
         CustomCarsStream(entranceCarsArray.toList())
     )
     try {
         parkingSimulation.start()
-    } catch (e: AlreadyRegisteredCarException) {
-        println("Simulation found two same cars on the parking. Simulation killed")
+    } catch (e: EmptyCarStreamException) {
+        println("Simulation tried to get car from empty car stream. Simulation killed")
     }
 }

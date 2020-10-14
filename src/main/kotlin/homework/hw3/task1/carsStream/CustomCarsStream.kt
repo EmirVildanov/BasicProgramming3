@@ -9,13 +9,13 @@ class CustomCarsStream(private val entranceCarsArray: List<List<Car>>) : CarsStr
 
     private val carsArrayPointers = Array(entranceCarsArray.size) { 0 }
 
-    override fun getNextCar(): Pair<Car, Int>? {
+    override fun getNextCar(): Pair<Car, Int> {
         val currentEntranceIndex: Int? = findFreeCarsArrayIndex()
         if (isEmpty || currentEntranceIndex == null) {
             if (currentEntranceIndex == null) {
                 isEmpty = true
             }
-            return null
+            throw EmptyCarStreamException("Car stream is empty")
         }
         val currentPointerValue = carsArrayPointers[currentEntranceIndex]
         val currentCar = entranceCarsArray[currentEntranceIndex][currentPointerValue]

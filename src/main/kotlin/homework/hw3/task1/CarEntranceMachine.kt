@@ -1,32 +1,25 @@
 package homework.hw3.task1
 
-import homework.hw3.task1.exceptions.AlreadyRegisteredCarException
-import homework.hw3.task1.exceptions.ParkingIsOverflowed
+import homework.hw3.task1.server.ParkingAPI
+import kotlinx.coroutines.delay
 
 class CarEntranceMachine(
     private val id: Int,
-    private val parking: Parking
+    private val parkingAPI: ParkingAPI
 ) {
-    fun registerEnteringCar(car: Car): Boolean {
-        try {
-            var isCarEntered = true
-            if (!parking.enterNewCar(car)) {
-//                println("The parking is full. You will have to wait a bit")
-                isCarEntered = false
-            }
-            if (isCarEntered) {
-                println("$car entered from entrance ${id + 1}")
-            }
-            return isCarEntered
-        } catch (exception: AlreadyRegisteredCarException) {
-            throw exception
-        } catch (exception: ParkingIsOverflowed) {
-            return false
+    suspend fun registerEnteringCar(car: Car, delayTime: Long) {
+        while (!parkingAPI.tryToEnter(car)) {
+            delay(delayTime)
+            println("The parking is full. $car is waiting for opportunity to enter")
         }
+        println("$car entered from entrance ${id + 1}")
     }
 
-    fun registerLeavingCar(car: Car) {
-        parking.popCar(car)
+    suspend fun registerLeavingCar(car: Car, delayTime: Long) {
+        while (!parkingAPI.tryToLeave(car)) {
+            delay(delayTime)
+            println("$car tries to leave. Waiting for an opportunity to leave")
+        }
         println("$car leaved from entrance ${id + 1}")
     }
 }

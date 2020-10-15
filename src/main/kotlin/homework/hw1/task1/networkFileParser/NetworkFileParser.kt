@@ -1,9 +1,9 @@
-package homework.hw1.task1.networlFileParser
+package homework.hw1.task1.networkFileParser
 
 import homework.hw1.task1.Computer
 import homework.hw1.task1.OperatingSystem
-import homework.hw1.task1.networlFileParser.exceptions.FileReadException
-import homework.hw1.task1.networlFileParser.exceptions.NetworkMatrixException
+import homework.hw1.task1.networkFileParser.exceptions.FileReadException
+import homework.hw1.task1.networkFileParser.exceptions.NetworkMatrixException
 import java.io.File
 import java.lang.Exception
 import java.lang.IllegalArgumentException

@@ -1,0 +1,9 @@
+10
+Toyota, 432BM32
+Lada, м234вы
+Hyundai, DF3245
+Toyota, 23HA234
+Lada, о923ек
+BMV, 234KJ32
+Reno, м344ва
+Volvo, 564FDS21
